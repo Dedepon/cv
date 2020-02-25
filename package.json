@@ -1,0 +1,23 @@
+{
+  "name": "cv",
+  "version": "1.0.0",
+  "description": "Learning Pixi.js in order to create an interactible CV (in long term).",
+  "main": "cv.html",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dede-pon/cv.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dede-pon/cv/issues"
+  },
+  "homepage": "https://github.com/dede-pon/cv#readme"
+}
