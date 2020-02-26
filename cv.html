@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
 		<title>PIXI test</title>
+		<style>canvas { border: solid 1px black; }</style>
 	</head>
 	<body>
 		<script src="./pixi/pixi.min.js"></script>
@@ -16,6 +17,8 @@
 				resources = PIXI.loader.resources,
 				TextureCache = PIXI.utils.TextureCache,
 				Sprite = PIXI.Sprite,
+				Text = PIXI.Text,
+				TextStyle = PIXI.TextStyle,
 				Rectangle = PIXI.Rectangle;
 
 			//Create a Pixi pApplication
@@ -23,7 +26,7 @@
 				width: 512, 
 				height: 512,                       
 				antialias: true, 
-				transparent: false, 
+				transparent: true, 
 				resolution: 1
 			});
 
@@ -37,13 +40,28 @@
 
 			//Define variables that might be used in more 
 			//than one function
-			let catSprite, state;
+			let catSprite, state, title, style;
 
 			function setup() {
 
-				//There are 3 ways to make sprites from textures atlas frames
+				// add title
+				style = new TextStyle({
+					fontFamily: "Arial",
+					fontSize: 36,
+					fill: "white",
+					stroke: '#0033ff',
+					strokeThickness: 4,
+					dropShadow: true,
+					dropShadowColor: "#000000",
+					dropShadowBlur: 4,
+					dropShadowAngle: Math.PI / 6,
+					dropShadowDistance: 6,
+				});
+				title = new Text("Welcome !!!", style);
+				title.x = pApp.view.width / 2 - title.width / 2;
+				title.y = 48;
+				pApp.stage.addChild(title);
 
-				//1. Access the `TextureCache` directly
 				let catTexture = TextureCache["cat"];
 				catSprite = new Sprite(catTexture);
 
@@ -61,53 +79,68 @@
 					right = keyboard("ArrowRight"),
 					down = keyboard("ArrowDown");
 
-				//Left arrow key `press` method
+				//Left
 				left.press = () => {
-					//Change the cat's velocity when the key is pressed
-					catSprite.vx = -5;
-					catSprite.vy = 0;
+					if (!right.isDown) {
+						catSprite.vx = -5;
+					} else {
+						catSprite.vx = 0;						
+					}
 				};
 
-				//Left arrow key `release` method
 				left.release = () => {
-					//If the left arrow has been released, and the right arrow isn't down,
-					//and the cat isn't moving vertically:
-					//Stop the cat
-					if (!right.isDown && catSprite.vy === 0) {
+					if (!right.isDown) {
 						catSprite.vx = 0;
+					} else {
+						catSprite.vx = 5;
 					}
 				};
 
 				//Up
 				up.press = () => {
-					catSprite.vy = -5;
-					catSprite.vx = 0;
+					if (!down.isDown) {
+						catSprite.vy = -5;
+					} else {
+						catSprite.vy = 0;
+					}
 				};
 				up.release = () => {
-					if (!down.isDown && catSprite.vx === 0) {
+					if (!down.isDown) {
 						catSprite.vy = 0;
+					} else {
+						catSprite.vy = 5;
 					}
 				};
 
 				//Right
 				right.press = () => {
-					catSprite.vx = 5;
-					catSprite.vy = 0;
+					if (!left.isDown) {
+						catSprite.vx = 5;
+					} else {
+						catSprite.vx = 0;
+					}
 				};
 				right.release = () => {
-					if (!left.isDown && catSprite.vy === 0) {
+					if (!left.isDown) {
 						catSprite.vx = 0;
+					} else {
+						catSprite.vx = -5;
 					}
 				};
 
 				//Down
 				down.press = () => {
-					catSprite.vy = 5;
-					catSprite.vx = 0;
+					if (!up.isDown) {
+						catSprite.vy = 5;
+					} else {
+						catSprite.vy = 0;
+					}
 				};
 				down.release = () => {
-					if (!up.isDown && catSprite.vx === 0) {
+					if (!up.isDown) {
 						catSprite.vy = 0;
+					} else {
+						catSprite.vy = -5;
 					}
 				};
 
